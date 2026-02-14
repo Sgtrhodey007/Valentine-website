@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Will You Be My Valentine? 💍</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  min-height:100vh;
+  background:radial-gradient(circle at top,#ff4e8b,#8b0000);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  color:white;
+  text-align:center;
+  padding:40px 20px;
+  overflow-x:hidden;
+}
+
+h1{
+  font-size:2.5rem;
+  margin-bottom:20px;
+}
+
+.buttons{
+  position:relative;
+  height:80px;
+  margin-bottom:20px;
+}
+
+button{
+  padding:12px 25px;
+  border:none;
+  border-radius:30px;
+  font-size:1rem;
+  cursor:pointer;
+  margin:0 10px;
+  transition:0.3s ease;
+}
+
+#yesBtn{
+  background:white;
+  color:#ff2e63;
+}
+
+#noBtn{
+  background:black;
+  color:white;
+  position:absolute;
+}
+
+#loveMessage{
+  margin-top:20px;
+  font-size:1.6rem;
+  display:none;
+}
+
+/* Gallery */
+/* Portrait 9:16 Gallery */
+.gallery{
+  width:90%;
+  max-width:400px;          /* keeps it elegant on desktop */
+  aspect-ratio: 9 / 16;     /* TRUE portrait ratio */
+  margin:30px auto;
+  border-radius:20px;
+  overflow:hidden;
+  box-shadow:0 15px 40px rgba(0,0,0,0.4);
+  position:relative;
+  background:black;
+}
+
+.gallery img{
+  width:100%;
+  height:100%;
+  object-fit:cover;         /* fills frame cleanly */
+  position:absolute;
+  top:0;
+  left:0;
+  opacity:0;
+  transition:opacity 1s ease-in-out;
+}
+
+.gallery img.active{
+  opacity:1;
+}
+
+/* Floating hearts */
+.heart{
+  position:absolute;
+  font-size:20px;
+  animation:float 6s linear infinite;
+}
+
+@keyframes float{
+  0%{transform:translateY(100vh);opacity:0;}
+  50%{opacity:1;}
+  100%{transform:translateY(-10vh);opacity:0;}
+}
+
+/* Responsive */
+@media(max-width:768px){
+  .gallery{ height:200px; }
+  h1{ font-size:1.8rem; }
+}
+</style>
+</head>
+
+<body>
+
+<h1>Will You Be My Valentine? 💍❤️</h1>
+
+<div class="buttons">
+  <button id="yesBtn">YES 😍</button>
+  <button id="noBtn">NO 😜</button>
+</div>
+
+<h2 id="loveMessage">YAYYYY ❤️ I LOVE YOU SO MUCH PILLUUU !!!! 💕</h2>
+
+<div class="gallery">
+  <img src="images/pic1.jpg" class="active">
+  <img src="images/pic2.jpg">
+  <img src="images/pic3.jpg">
+  <img src="images/pic4.jpg">
+  <img src="images/pic5.jpg">
+  <img src="images/pic6.jpg">
+  <img src="images/pic7.jpg">
+  <img src="images/pic8.jpg">
+  <img src="images/pic9.jpg">
+  <img src="images/pic10.jpg">
+</div>
+
+<audio autoplay loop>
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+/* Floating hearts */
+function createHeart(){
+  const heart=document.createElement('div');
+  heart.classList.add('heart');
+  heart.innerHTML="❤️";
+  heart.style.left=Math.random()*100+"vw";
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(),6000);
+}
+setInterval(createHeart,400);
+
+/* NO button teleport */
+const noBtn=document.getElementById("noBtn");
+
+function moveNoButton(){
+  const maxX=window.innerWidth-100;
+  const maxY=window.innerHeight-100;
+  noBtn.style.position="fixed";
+  noBtn.style.left=Math.random()*maxX+"px";
+  noBtn.style.top=Math.random()*maxY+"px";
+}
+
+noBtn.addEventListener("click",moveNoButton);
+noBtn.addEventListener("touchstart",moveNoButton);
+
+function emojiBurst() {
+  const emojis = ["💋","😍","😘","😚"];
+
+  for (let i = 0; i < 20; i++) {
+    const emoji = document.createElement("div");
+    emoji.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+
+    emoji.style.position = "fixed";
+    emoji.style.left = window.innerWidth / 2 + "px";
+    emoji.style.top = window.innerHeight / 2 + "px";
+    emoji.style.fontSize = (Math.random() * 20 + 20) + "px";
+    emoji.style.pointerEvents = "none";
+    emoji.style.transition = "all 3s ease-out";
+
+    document.body.appendChild(emoji);
+
+    const angle = Math.random() * 2 * Math.PI;
+    const radius = Math.random() * 200 + 50;
+
+    setTimeout(() => {
+      emoji.style.left = (window.innerWidth / 2 + Math.cos(angle) * radius) + "px";
+      emoji.style.top = (window.innerHeight / 2 + Math.sin(angle) * radius) + "px";
+      emoji.style.opacity = "0";
+    }, 10);
+
+    setTimeout(() => {
+      emoji.remove();
+    }, 3000);
+  }
+}
+
+/* YES button */
+const yesBtn=document.getElementById("yesBtn");
+const loveMessage=document.getElementById("loveMessage");
+
+yesBtn.addEventListener("click",()=>{
+  loveMessage.style.display="block";
+  emojiBurst();
+});
+
+/* Gallery slider */
+let slides=document.querySelectorAll(".gallery img");
+let index=0;
+
+setInterval(()=>{
+  slides[index].classList.remove("active");
+  index=(index+1)%slides.length;
+  slides[index].classList.add("active");
+},3000);
+</script>
+
+</body>
+</html>
